@@ -7,6 +7,8 @@ public class Apple {
     private AppleColor color;
     private Integer weight;
 
+    public Apple() { }
+
     public Integer getWeight() {
         return weight;
     }
