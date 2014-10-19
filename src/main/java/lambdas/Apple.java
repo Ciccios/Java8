@@ -3,20 +3,28 @@ package lambdas;
 public class Apple {
 
     private static int count = 0;
-    private final int id;
+    private int id;
     private AppleColor color;
+    private Integer weight;
+
+    public Integer getWeight() {
+        return weight;
+    }
 
     public enum AppleColor {
         GREEN, RED, YELLOW;
     }
 
-    public static Apple newApple(AppleColor color){
-        return new Apple(count++, color);
+    public static int getCount() { return count; }
+
+    public static Apple newApple(AppleColor color, int weight){
+        return new Apple(count++, color, weight);
     }
 
-    private Apple(int id, AppleColor color) {
+    private Apple(int id, AppleColor color, int weight) {
         this.id = id;
         this.color = color;
+        this.weight = weight;
     }
 
     public AppleColor getColor() {
@@ -25,6 +33,6 @@ public class Apple {
 
     @Override
     public String toString() {
-        return "Apple number '" + id + "' of color " + color;
+        return "Apple number '" + id + "' of color " + color + " with weight " + weight;
     }
 }
