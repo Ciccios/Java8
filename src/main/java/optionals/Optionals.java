@@ -1,6 +1,6 @@
 package optionals;
 
-import lambdas.Apple;
+import model.Apple;
 
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -51,7 +51,6 @@ public class Optionals {
         Optional<Apple.AppleColor> optionalAppleColor = optionalApple2.map(Apple::getColor);
 
         assert optionalAppleColor.isPresent();
-
 
     }
 }

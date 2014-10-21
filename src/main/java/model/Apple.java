@@ -1,4 +1,4 @@
-package lambdas;
+package model;
 
 public class Apple {
 

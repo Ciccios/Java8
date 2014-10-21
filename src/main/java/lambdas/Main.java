@@ -1,5 +1,7 @@
 package lambdas;
 
+import model.Apple;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +55,7 @@ public class Main {
         apples.add(Apple.newApple(Apple.AppleColor.GREEN, 25));
         apples.add(Apple.newApple(Apple.AppleColor.RED, 18));
         apples.add(Apple.newApple(Apple.AppleColor.YELLOW, 22));
-        apples.add(Apple.newApple(Apple.AppleColor.YELLOW, 22));
+        apples.add(Apple.newApple(Apple.AppleColor.YELLOW, 28));
         return apples;
     }
 }

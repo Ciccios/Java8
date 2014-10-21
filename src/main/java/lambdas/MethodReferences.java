@@ -1,5 +1,7 @@
 package lambdas;
 
+import model.Apple;
+
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
