@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.LongAccumulator;
 import java.util.concurrent.atomic.LongAdder;
 
 public class AddersAndAccumulators {
@@ -105,6 +106,14 @@ public class AddersAndAccumulators {
 
         System.out.println("LongAdder 100M increments took:  " + (incrementerEnd2 - incrementerStart2) + " ms");
         System.out.println("LongAdder value is: " + longAdderIncrementer.longValue());
+
+        LongAccumulator accumulator1 = new LongAccumulator((x, y)-> x + y, 0L);
+        accumulator1.accumulate(4);
+        assert accumulator1.get() == 4L;
+
+        LongAccumulator accumulator2 = new LongAccumulator((x, y)-> x * y, 1L);
+        accumulator2.accumulate(8);
+        assert accumulator2.get() == 8L;
     }
 
 }
