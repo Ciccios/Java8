@@ -31,7 +31,7 @@ public class AddersAndAccumulators {
             executorService.execute(adder);
         }
         executorService.shutdown();
-        executorService.awaitTermination(15, TimeUnit.SECONDS);
+        executorService.awaitTermination(5, TimeUnit.SECONDS);
         long endTime = System.currentTimeMillis();
         long sum = longAdder.sum();
         System.out.println("Time elapsed: " + (endTime - start));
@@ -54,7 +54,7 @@ public class AddersAndAccumulators {
             executorService1.submit(atomic);
         }
         executorService1.shutdown();
-        executorService1.awaitTermination(15, TimeUnit.SECONDS);
+        executorService1.awaitTermination(5, TimeUnit.SECONDS);
         System.out.println("Sum: " + atomicLong.get());
 
 
