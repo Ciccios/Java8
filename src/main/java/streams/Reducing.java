@@ -17,7 +17,7 @@ public class Reducing {
                                   .sum();
 
         long time = System.currentTimeMillis() - start;
-        System.out.println(sumUnboxed + " in " + time + " ms");
+        System.out.println("Sum non boxed: " + sumUnboxed + " in " + time + " ms");
 
 
         long start2 = System.currentTimeMillis();
@@ -25,7 +25,7 @@ public class Reducing {
                 .reduce(0, Integer::sum);
 
         long time2 = System.currentTimeMillis() - start2;
-        System.out.println(sum + " in " + time2 + " ms");
+        System.out.println("Boxed sum: " + sum + " in " + time2 + " ms");
 
 
         Optional<Integer> reduced = Stream.of(1, 2, 3, 4, 5, 6)

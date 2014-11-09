@@ -12,58 +12,10 @@ public class AddersAndAccumulators {
     public static void main(String[] args) throws InterruptedException {
 
         /**
-         * Using long adder for less contention and see how many increments we get after 10 seconds
-         */
-        LongAdder longAdder = new LongAdder();
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-
-        System.out.println("Starting Threads for long adder ... ");
-        Runnable adder = () -> {
-            long current = System.currentTimeMillis();
-            long end = current + 10000;
-            while (System.currentTimeMillis() < end) {
-                longAdder.increment();
-            }
-        };
-
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < 10; i++) {
-            executorService.execute(adder);
-        }
-        executorService.shutdown();
-        executorService.awaitTermination(5, TimeUnit.SECONDS);
-        long endTime = System.currentTimeMillis();
-        long sum = longAdder.sum();
-        System.out.println("Time elapsed: " + (endTime - start));
-        System.out.println("Sum: " + sum);
-
-        /**
-         * Using Atomic Long to see how many increments we get after 10 seconds
-         */
-        ExecutorService executorService1 = Executors.newFixedThreadPool(10);
-        AtomicLong atomicLong = new AtomicLong();
-        Runnable atomic = () -> {
-            long current = System.currentTimeMillis();
-            long end = current + 10000;
-            while (System.currentTimeMillis() < end) {
-                atomicLong.incrementAndGet();
-            }
-        };
-
-        for (int i = 0; i < 10; i++) {
-            executorService1.submit(atomic);
-        }
-        executorService1.shutdown();
-        executorService1.awaitTermination(5, TimeUnit.SECONDS);
-        System.out.println("Sum: " + atomicLong.get());
-
-
-        /**
          * Now trying to make a fixed number of increments to see how much time it takes with AtomicLong
          */
 
         AtomicLong atomicIncrementer = new AtomicLong();
-        ExecutorService executorService2 = Executors.newFixedThreadPool(10);
         Runnable increment = () -> {
             long numIncrement = 10_000_000;
             for (int i = 0; i < numIncrement; i++) {
@@ -71,23 +23,29 @@ public class AddersAndAccumulators {
             }
         };
 
-        long incrementerStart = System.currentTimeMillis();
+        long incremented = 0;
+        System.out.println("Executing 10 times the AtomicLong Increment of 100Million increments spread across 10 threads");
         for (int i = 0; i < 10; i++) {
-            executorService2.submit(increment);
+            ExecutorService executorService2 = Executors.newFixedThreadPool(10);
+            long incrementerStart = System.currentTimeMillis();
+            for (int j = 0; j < 10; j++) {
+                executorService2.submit(increment);
+            }
+            executorService2.shutdown();
+            executorService2.awaitTermination(1, TimeUnit.MINUTES);
+            long incrementerEnd = System.currentTimeMillis();
+
+            incremented = incremented + (incrementerEnd - incrementerStart);
+            System.out.println("Measure " + i + " complete and took " + (incrementerEnd - incrementerStart) + " ms");
         }
 
-        executorService2.shutdown();
-        executorService2.awaitTermination(1, TimeUnit.MINUTES);
-        long incrementerEnd = System.currentTimeMillis();
-
-        System.out.println("AtomicLong 100M increments took:  " + (incrementerEnd - incrementerStart) + " ms");
+        System.out.println("AtomicLong 100M increments average time in 100 executions:  " + (incremented/10) + " ms");
         System.out.println("AtomicLong value is: " + atomicIncrementer.get());
 
         /**
          * Now trying to make a fixed number of increments to see how much time it takes with LongAdder
          */
         LongAdder longAdderIncrementer = new LongAdder();
-        ExecutorService executorService3 = Executors.newFixedThreadPool(10);
         Runnable increment2 = () -> {
             long numIncrement = 10_000_000;
             for (int i = 0; i < numIncrement; i++) {
@@ -95,16 +53,23 @@ public class AddersAndAccumulators {
             }
         };
 
-        long incrementerStart2 = System.currentTimeMillis();
-        for (int i = 0; i < 10; i++) {
-            executorService3.submit(increment2);
+        long incremented2 = 0;
+        for (int k = 0; k < 10; k++) {
+            ExecutorService executorService3 = Executors.newFixedThreadPool(10);
+            long incrementerStart2 = System.currentTimeMillis();
+            for (int i = 0; i < 10; i++) {
+                executorService3.submit(increment2);
+            }
+
+            executorService3.shutdown();
+            executorService3.awaitTermination(1, TimeUnit.MINUTES);
+            long incrementerEnd2 = System.currentTimeMillis();
+
+            incremented2 = incremented2 + (incrementerEnd2 - incrementerStart2);
+            System.out.println("Measure " + k + " complete and took " + (incrementerEnd2-incrementerStart2) + " ms");
         }
 
-        executorService3.shutdown();
-        executorService3.awaitTermination(1, TimeUnit.MINUTES);
-        long incrementerEnd2 = System.currentTimeMillis();
-
-        System.out.println("LongAdder 100M increments took:  " + (incrementerEnd2 - incrementerStart2) + " ms");
+        System.out.println("LongAdder 100M increments average time in 10 executions:  " + (incremented2/10) + " ms");
         System.out.println("LongAdder value is: " + longAdderIncrementer.longValue());
 
         LongAccumulator accumulator1 = new LongAccumulator((x, y)-> x + y, 0L);

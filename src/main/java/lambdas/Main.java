@@ -47,6 +47,8 @@ public class Main {
         Collections.sort(apples, Comparing.byWeight);
 
         System.out.println("Sorted by weight: " + apples);
+
+        Predicate<Apple> avc = a -> apples.add(null);
     }
 
     public static List<Apple> getApples() {

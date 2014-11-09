@@ -17,7 +17,7 @@ public class ParallelStream {
                  .limit(1000000)
                  .reduce(0L, Long::sum);
 
-        System.out.println("Sequential sum took " + (System.currentTimeMillis() - start2) + " ms");
+        System.out.println("Boxed Long Sequential sum took " + (System.currentTimeMillis() - start2) + " ms");
 
         /**
          * Summing elements using multiple threads with parallel stream
@@ -29,7 +29,7 @@ public class ParallelStream {
                  .limit(1000000)
                  .reduce(0L, Long::sum);
 
-        System.out.println("Parallel sum took " + (System.currentTimeMillis() - start3) + " ms");
+        System.out.println("Boxed Long Parallel sum took " + (System.currentTimeMillis() - start3) + " ms");
 
 
         /**
@@ -83,8 +83,6 @@ public class ParallelStream {
                          .parallel()
                          .sum();
     }
-
-
 
     public static long sequentialSum(long n) {
         return Stream.iterate(1L, i -> i + 1)
